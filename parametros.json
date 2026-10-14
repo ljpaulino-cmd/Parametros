@@ -1,27 +1,27 @@
 [
   {
     "nome": "BancoContabilidade",
-    "modulo": "Contabilidade",
+    "modulo": "Tesouraria",
     "descricao": "O parâmetro BancoContabilidade, configurado como SMARAPD nos sistemas, define o banco de dados de contabilidade utilizado como referência para acesso às tabelas contábeis por meio de sinônimos, em conjunto com o parâmetro ServidorContabilidade, permitindo que as rotinas de crítica contábil e importação de referências acessem as tabelas necessárias conforme a configuração do servidor e do banco de dados."
   },
   {
-    "nome": "PARAM_002",
-    "modulo": "Segurança",
-    "descricao": "Ativa ou desativa o registro de logs detalhados durante a execução."
+    "nome": "CodTributoCobrancaAcumulada",
+    "modulo": "Tesouraria",
+    "descricao": "O parâmetro CodTributoCobrancaAcumulada define o código do tributo utilizado no lançamento da cobrança acumulada, sendo recuperado das configurações do sistema e informado na geração da guia de arrecadação, vinculando a cobrança ao tributo correspondente e permitindo que o lançamento e a parcela sejam registrados com os valores e as informações pertinentes à cobrança."
   },
   {
-    "nome": "PARAM_003",
-    "modulo": "Integração",
-    "descricao": "Indica o número de tentativas automáticas em caso de falha. Quando o limite é atingido, o processo é interrompido e uma mensagem de erro é registrada para consulta posterior."
+    "nome": "IdPadraoCalculoTaxasDiversas",
+    "modulo": "Tesouraria",
+    "descricao": "O parâmetro IdPadraoCalculoTaxasDiversas define o identificador do padrão de cálculo utilizado na geração de cobranças de taxas diversas, permitindo recuperar a condição de pagamento associada ao padrão configurado e vinculá-la à cobrança, garantindo que a geração das taxas siga as condições de pagamento estabelecidas no sistema."
   },
   {
-    "nome": "PARAM_004",
-    "modulo": "Arquivos",
-    "descricao": "Define a pasta de destino onde os arquivos gerados serão salvos."
+    "nome": "ServidorContabilidade",
+    "modulo": "Tesouraria",
+    "descricao": "O parâmetro ServidorContabilidade define o servidor SQL Server onde estão localizadas as informações do banco de dados de contabilidade, sendo utilizado em conjunto com o parâmetro BancoContabilidade para determinar a origem das tabelas contábeis acessadas pelas rotinas de crítica contábil e importação de referências, permitindo que os sinônimos apontem para o servidor e o banco de dados corretos, conforme a configuração do ambiente."
   },
   {
-    "nome": "PARAM_005",
-    "modulo": "Interface",
-    "descricao": "Controla o idioma usado nas mensagens exibidas ao usuário."
+    "nome": "IntegracaoContabilidade",
+    "modulo": "Tesouraria",
+    "descricao": "O parâmetro IntegracaoContabilidade define se a integração com a contabilidade estará habilitada no sistema, sendo que, quando configurado como 'N', a verificação da abertura do caixa em relação à situação dos meses contábeis é ignorada, permitindo a continuidade do processo sem essa validação; quando configurado como 'S' ou não estiver preenchido, a integração permanece ativa e são realizadas as verificações de conexão com o banco de dados contábil e da situação do mês de referência, identificando se ele já foi consistido ou exportado para o Tribunal."
   }
 ]
