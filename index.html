@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parâmetros | SMAR</title>
+<style>
+  :root {
+    --verde: rgb(12, 174, 137);
+    --verde-escuro: rgb(7, 104, 82);
+    --verde-claro: rgb(230, 247, 243);
+    --branco: #ffffff;
+    --texto: #1b2b27;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--branco);
+    color: var(--texto);
+    line-height: 1.5;
+  }
+  .topo {
+    background: var(--branco);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--verde-claro);
+  }
+  .topo img { display: block; height: 44px; width: auto; }
+  header {
+    background: var(--verde);
+    color: var(--branco);
+    padding: 36px 20px 56px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 6px; font-size: 2rem; }
+  header p { margin: 0; font-size: 1.05rem; }
+  .busca { max-width: 640px; margin: -28px auto 0; padding: 0 20px; }
+  .busca input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.05rem;
+    border: 2px solid var(--verde);
+    border-radius: 999px;
+    background: var(--branco);
+    color: var(--texto);
+    box-shadow: 0 4px 14px rgba(12, 174, 137, 0.25);
+  }
+  .busca input:focus { outline: 3px solid var(--verde-claro); outline-offset: 2px; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+  #contagem { color: var(--verde-escuro); font-size: 0.95rem; margin-bottom: 16px; }
+
+  /* Cada parâmetro: nome à esquerda, descrição em bloco à direita */
+  .param {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 12px;
+  }
+  .param h2 {
+    margin: 0;
+    padding-top: 14px;
+    font-size: 1.05rem;
+    font-family: ui-monospace, Consolas, monospace;
+    color: var(--verde-escuro);
+    overflow-wrap: anywhere;
+  }
+  .param .bloco {
+    background: var(--verde-claro);
+    border: 1px solid var(--verde);
+    border-left: 6px solid var(--verde);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .param .bloco p { margin: 0; }
+  mark { background: var(--verde); color: var(--branco); border-radius: 3px; padding: 0 3px; }
+  .vazio {
+    text-align: center;
+    padding: 40px 20px;
+    border: 2px dashed var(--verde);
+    border-radius: 8px;
+    color: var(--verde-escuro);
+  }
+  @media (max-width: 640px) {
+    .param { grid-template-columns: 1fr; gap: 6px; }
+    .param h2 { padding-top: 0; }
+    header h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <img src="logo.png" alt="SMAR">
+</div>
+
+<header>
+  <h1>Parâmetros</h1>
+  <p>Pesquise por palavra-chave para encontrar o parâmetro certo</p>
+</header>
+
+<div class="busca">
+  <input id="busca" type="search" placeholder="Pesquisar na descrição..." aria-label="Pesquisar parâmetros" autofocus>
+</div>
+
+<main>
+  <div id="contagem" aria-live="polite"></div>
+  <div id="lista"></div>
+</main>
+
+<script>
+  const campo = document.getElementById("busca");
+  const lista = document.getElementById("lista");
+  const contagem = document.getElementById("contagem");
+  let PARAMETROS = [];
+
+  // Remove acentos e ignora maiúsculas/minúsculas
+  const normalizar = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const escapar = t => t.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // Destaca os termos pesquisados (mantém os acentos originais)
+  function destacar(texto, termos) {
+    if (!termos.length) return escapar(texto);
+    const norm = normalizar(texto);
+    const marcas = new Array(texto.length).fill(false);
+    termos.forEach(t => {
+      let i = norm.indexOf(t);
+      while (i !== -1) {
+        for (let k = i; k < i + t.length; k++) marcas[k] = true;
+        i = norm.indexOf(t, i + 1);
+      }
+    });
+    let out = "", aberto = false;
+    for (let i = 0; i < texto.length; i++) {
+      if (marcas[i] && !aberto) { out += "<mark>"; aberto = true; }
+      if (!marcas[i] && aberto) { out += "</mark>"; aberto = false; }
+      out += escapar(texto[i]);
+    }
+    return aberto ? out + "</mark>" : out;
+  }
+
+  function mostrar() {
+    const termos = normalizar(campo.value).split(/\s+/).filter(Boolean);
+    const achados = PARAMETROS.filter(p => {
+      const alvo = normalizar(p.nome + " " + p.descricao);
+      return termos.every(t => alvo.includes(t));
+    });
+
+    contagem.textContent = termos.length
+      ? achados.length + " de " + PARAMETROS.length + " parâmetros encontrados"
+      : PARAMETROS.length + " parâmetros";
+
+    lista.innerHTML = achados.length
+      ? achados.map(p => `
+          <article class="param">
+            <h2>${destacar(p.nome, termos)}</h2>
+            <div class="bloco"><p>${destacar(p.descricao, termos)}</p></div>
+          </article>`).join("")
+      : '<div class="vazio">Nenhum parâmetro encontrado. Tente outra palavra-chave.</div>';
+  }
+
+  // Os dados ficam no arquivo parametros.json, no mesmo repositório
+  fetch("parametros.json")
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(dados => { PARAMETROS = dados; mostrar(); })
+    .catch(() => {
+      lista.innerHTML = '<div class="vazio">Não foi possível carregar o parametros.json. Se abriu o arquivo direto do computador, publique no GitHub Pages ou use um servidor local.</div>';
+    });
+
+  campo.addEventListener("input", mostrar);
+</script>
+</body>
+</html>

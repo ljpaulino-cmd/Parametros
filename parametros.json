@@ -1,0 +1,7 @@
+[
+  { "nome": "PARAM_001", "descricao": "Define o tempo máximo de espera, em segundos, antes de encerrar a conexão." },
+  { "nome": "PARAM_002", "descricao": "Ativa ou desativa o registro de logs detalhados durante a execução." },
+  { "nome": "PARAM_003", "descricao": "Indica o número de tentativas automáticas em caso de falha. Quando o limite é atingido, o processo é interrompido e uma mensagem de erro é registrada para consulta posterior." },
+  { "nome": "PARAM_004", "descricao": "Define a pasta de destino onde os arquivos gerados serão salvos." },
+  { "nome": "PARAM_005", "descricao": "Controla o idioma usado nas mensagens exibidas ao usuário." }
+]
