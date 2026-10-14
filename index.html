@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Parâmetros | SMAR</title>
+<title>Parâmetros do Sistema - SmarTB</title>
 <style>
   :root {
     --verde: rgb(12, 174, 137);
@@ -34,7 +34,14 @@
   }
   header h1 { margin: 0 0 6px; font-size: 2rem; }
   header p { margin: 0; font-size: 1.05rem; }
-  .busca { max-width: 640px; margin: -28px auto 0; padding: 0 20px; }
+  .filtros {
+    max-width: 980px;
+    margin: -28px auto 0;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 0.8fr 1.8fr;
+    gap: 16px;
+  }
   .busca input {
     width: 100%;
     padding: 16px 20px;
@@ -45,9 +52,22 @@
     color: var(--texto);
     box-shadow: 0 4px 14px rgba(12, 174, 137, 0.25);
   }
+  #busca { min-height: 58px; }
+  #buscaModulo { max-width: 320px; justify-self: stretch; }
   .busca input:focus { outline: 3px solid var(--verde-claro); outline-offset: 2px; }
-  main { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 20px 60px; }
   #contagem { color: var(--verde-escuro); font-size: 0.95rem; margin-bottom: 16px; }
+
+  .grupo-modulo {
+    margin-bottom: 24px;
+  }
+  .grupo-modulo h3 {
+    margin: 0 0 12px;
+    color: var(--verde-escuro);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
 
   /* Cada parâmetro: nome à esquerda, descrição em bloco à direita */
   .param {
@@ -57,13 +77,21 @@
     align-items: start;
     margin-bottom: 12px;
   }
+  .nome-col {
+    padding-top: 14px;
+  }
   .param h2 {
     margin: 0;
-    padding-top: 14px;
     font-size: 1.05rem;
     font-family: ui-monospace, Consolas, monospace;
     color: var(--verde-escuro);
     overflow-wrap: anywhere;
+  }
+  .modulo {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--verde-escuro);
+    opacity: 0.9;
   }
   .param .bloco {
     background: var(--verde-claro);
@@ -72,7 +100,41 @@
     border-radius: 8px;
     padding: 12px 16px;
   }
-  .param .bloco p { margin: 0; }
+  .param .texto {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    line-height: 1.5;
+    max-height: 1.5em;
+    transition: max-height 0.25s ease, -webkit-line-clamp 0.25s ease;
+  }
+  .param .bloco.expandido .texto {
+    -webkit-line-clamp: unset;
+    max-height: 1000px;
+    overflow: visible;
+  }
+  .param .toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-top: 10px;
+    margin-left: auto;
+    background: var(--verde);
+    border: none;
+    color: var(--branco);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(12, 174, 137, 0.25);
+  }
+  .param .toggle:hover {
+    filter: brightness(0.96);
+  }
   mark { background: var(--verde); color: var(--branco); border-radius: 3px; padding: 0 3px; }
   .vazio {
     text-align: center;
@@ -95,12 +157,17 @@
 </div>
 
 <header>
-  <h1>Parâmetros</h1>
-  <p>Pesquise por palavra-chave para encontrar o parâmetro certo</p>
+  <h1>Parâmetros do Sistema - SmarTB</h1>
+  <p>Pesquise por palavra-chave no módulo ou na descrição do parâmetro</p>
 </header>
 
-<div class="busca">
-  <input id="busca" type="search" placeholder="Pesquisar na descrição..." aria-label="Pesquisar parâmetros" autofocus>
+<div class="filtros">
+  <div class="busca">
+    <input id="buscaModulo" type="search" placeholder="Filtrar por módulo..." aria-label="Pesquisar por módulo" autofocus>
+  </div>
+  <div class="busca">
+    <input id="busca" type="search" placeholder="Pesquisar nome ou descrição do parâmetro..." aria-label="Pesquisar parâmetros por nome ou descrição">
+  </div>
 </div>
 
 <main>
@@ -110,19 +177,25 @@
 
 <script>
   const campo = document.getElementById("busca");
+  const campoModulo = document.getElementById("buscaModulo");
   const lista = document.getElementById("lista");
   const contagem = document.getElementById("contagem");
   let PARAMETROS = [];
 
   // Remove acentos e ignora maiúsculas/minúsculas
-  const normalizar = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const escapar = t => t.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const normalizar = t => (t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const escapar = t => (t || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function termosBusca(texto) {
+    return normalizar(texto).split(/\s+/).filter(Boolean);
+  }
 
   // Destaca os termos pesquisados (mantém os acentos originais)
   function destacar(texto, termos) {
-    if (!termos.length) return escapar(texto);
-    const norm = normalizar(texto);
-    const marcas = new Array(texto.length).fill(false);
+    const valor = texto || "";
+    if (!termos.length) return escapar(valor);
+    const norm = normalizar(valor);
+    const marcas = new Array(valor.length).fill(false);
     termos.forEach(t => {
       let i = norm.indexOf(t);
       while (i !== -1) {
@@ -131,32 +204,72 @@
       }
     });
     let out = "", aberto = false;
-    for (let i = 0; i < texto.length; i++) {
+    for (let i = 0; i < valor.length; i++) {
       if (marcas[i] && !aberto) { out += "<mark>"; aberto = true; }
       if (!marcas[i] && aberto) { out += "</mark>"; aberto = false; }
-      out += escapar(texto[i]);
+      out += escapar(valor[i]);
     }
     return aberto ? out + "</mark>" : out;
   }
 
   function mostrar() {
-    const termos = normalizar(campo.value).split(/\s+/).filter(Boolean);
-    const achados = PARAMETROS.filter(p => {
-      const alvo = normalizar(p.nome + " " + p.descricao);
-      return termos.every(t => alvo.includes(t));
+    const termosDescricao = termosBusca(campo.value);
+    const termosModulo = termosBusca(campoModulo.value);
+
+    const grupos = {};
+
+    PARAMETROS.forEach(p => {
+      const nome = p.nome || "";
+      const descricao = p.descricao || "";
+      const modulo = p.modulo || "Sem módulo";
+      const alvoDescricao = normalizar(nome + " " + descricao);
+      const alvoModulo = normalizar(modulo + " " + nome);
+
+      const combinaDescricao = termosDescricao.every(t => alvoDescricao.includes(t));
+      const combinaModulo = termosModulo.every(t => alvoModulo.includes(t));
+
+      if (combinaDescricao && combinaModulo) {
+        if (!grupos[modulo]) grupos[modulo] = [];
+        grupos[modulo].push(p);
+      }
     });
 
-    contagem.textContent = termos.length
-      ? achados.length + " de " + PARAMETROS.length + " parâmetros encontrados"
+    const moduloChaves = Object.keys(grupos).sort();
+    const total = moduloChaves.reduce((acc, key) => acc + grupos[key].length, 0);
+
+    const textoBusca = termosDescricao.length || termosModulo.length;
+    contagem.textContent = textoBusca
+      ? total + " de " + PARAMETROS.length + " parâmetros encontrados"
       : PARAMETROS.length + " parâmetros";
 
-    lista.innerHTML = achados.length
-      ? achados.map(p => `
-          <article class="param">
-            <h2>${destacar(p.nome, termos)}</h2>
-            <div class="bloco"><p>${destacar(p.descricao, termos)}</p></div>
-          </article>`).join("")
-      : '<div class="vazio">Nenhum parâmetro encontrado. Tente outra palavra-chave.</div>';
+    lista.innerHTML = moduloChaves.length
+      ? moduloChaves.map(modulo => `
+          <section class="grupo-modulo">
+            <h3>${destacar(modulo, termosModulo)}</h3>
+            ${grupos[modulo].map(p => `
+              <article class="param">
+                <div class="nome-col">
+                  <h2>${destacar(p.nome || "", termosDescricao)}</h2>
+                  <div class="modulo">${destacar(p.modulo || "Sem módulo", termosModulo)}</div>
+                </div>
+                <div class="bloco">
+                  <p class="texto">${destacar(p.descricao || "", termosDescricao)}</p>
+                  <button type="button" class="toggle" aria-expanded="false" aria-label="Expandir descrição">+</button>
+                </div>
+              </article>
+            `).join("")}
+          </section>`).join("")
+      : '<div class="vazio">Nenhum parâmetro encontrado. Tente outra palavra-chave ou módulo.</div>';
+
+    document.querySelectorAll(".toggle").forEach(botao => {
+      botao.addEventListener("click", () => {
+        const bloco = botao.closest(".bloco");
+        const aberto = bloco.classList.toggle("expandido");
+        botao.setAttribute("aria-expanded", String(aberto));
+        botao.textContent = aberto ? "−" : "+";
+        botao.setAttribute("aria-label", aberto ? "Contrair descrição" : "Expandir descrição");
+      });
+    });
   }
 
   // Os dados ficam no arquivo parametros.json, no mesmo repositório
@@ -168,6 +281,7 @@
     });
 
   campo.addEventListener("input", mostrar);
+  campoModulo.addEventListener("input", mostrar);
 </script>
 </body>
 </html>
