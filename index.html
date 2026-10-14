@@ -99,6 +99,9 @@
     border-left: 6px solid var(--verde);
     border-radius: 8px;
     padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .param .texto {
     margin: 0;
@@ -109,6 +112,7 @@
     line-height: 1.5;
     max-height: 1.5em;
     transition: max-height 0.25s ease, -webkit-line-clamp 0.25s ease;
+    flex: 1;
   }
   .param .bloco.expandido .texto {
     -webkit-line-clamp: unset;
@@ -116,21 +120,23 @@
     overflow: visible;
   }
   .param .toggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
+    width: 88px;
     height: 28px;
-    margin-top: 10px;
     margin-left: auto;
     background: var(--verde);
     border: none;
     color: var(--branco);
-    border-radius: 50%;
-    font-size: 1.1rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
     line-height: 1;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(12, 174, 137, 0.25);
+    padding: 0 10px;
+    white-space: nowrap;
   }
   .param .toggle:hover {
     filter: brightness(0.96);
@@ -254,7 +260,7 @@
                 </div>
                 <div class="bloco">
                   <p class="texto">${destacar(p.descricao || "", termosDescricao)}</p>
-                  <button type="button" class="toggle" aria-expanded="false" aria-label="Expandir descrição">+</button>
+                  <button type="button" class="toggle" aria-expanded="false" aria-label="Expandir descrição">Ver mais</button>
                 </div>
               </article>
             `).join("")}
@@ -266,7 +272,7 @@
         const bloco = botao.closest(".bloco");
         const aberto = bloco.classList.toggle("expandido");
         botao.setAttribute("aria-expanded", String(aberto));
-        botao.textContent = aberto ? "−" : "+";
+        botao.textContent = aberto ? "Ver menos" : "Ver mais";
         botao.setAttribute("aria-label", aberto ? "Contrair descrição" : "Expandir descrição");
       });
     });
