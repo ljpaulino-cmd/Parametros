@@ -6,102 +6,130 @@
 <title>Parâmetros do Sistema - SmarTB</title>
 <style>
   :root {
-    --verde: rgb(12, 174, 137);
-    --verde-escuro: rgb(7, 104, 82);
-    --verde-claro: rgb(230, 247, 243);
+    --verde: #0cae89;
+    --verde-escuro: #08745d;
+    --verde-claro: #e8f7f3;
     --branco: #ffffff;
-    --texto: #1b2b27;
+    --texto: #18332d;
+    --texto-suave: #60736e;
+    --borda: #dcebe6;
+    --fundo: #f5faf8;
+    --sombra: 0 12px 30px rgba(20, 73, 60, .08);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: var(--branco);
+    background: var(--fundo);
     color: var(--texto);
     line-height: 1.5;
   }
   .topo {
     background: var(--branco);
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--verde-claro);
+    padding: 12px max(24px, calc((100% - 1160px) / 2));
+    border-bottom: 1px solid var(--borda);
   }
-  .topo img { display: block; height: 44px; width: auto; }
+  .topo img { display: block; height: 40px; width: auto; }
   header {
-    background: var(--verde);
+    background: linear-gradient(125deg, #08745d 0%, #0cae89 70%, #29c3a0 100%);
     color: var(--branco);
-    padding: 36px 20px 56px;
+    padding: 48px 20px 64px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  header h1 { margin: 0 0 6px; font-size: 2rem; }
-  header p { margin: 0; font-size: 1.05rem; }
+  header::after {
+    content: ""; position: absolute; width: 340px; height: 340px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.16); right: max(-90px, calc((100% - 1280px) / 2)); top: -220px;
+    box-shadow: 0 0 0 34px rgba(255,255,255,.045), 0 0 0 70px rgba(255,255,255,.035);
+  }
+  header h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 3vw, 2.25rem); letter-spacing: -.035em; }
+  header p { margin: 0; font-size: 1rem; color: rgba(255,255,255,.88); }
   .filtros {
-    max-width: 1200px;
+    max-width: 1160px;
     margin: -28px auto 0;
-    padding: 0 20px;
+    padding: 0 24px;
     display: grid;
-    grid-template-columns: 0.8fr 1.8fr;
-    gap: 16px;
+    grid-template-columns: minmax(220px, .72fr) minmax(300px, 1.8fr);
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .busca { position: relative; }
+  .busca::before {
+    content: ""; position: absolute; z-index: 1; left: 18px; top: 50%; width: 14px; height: 14px;
+    border: 2px solid #78918a; border-radius: 50%; transform: translateY(-60%); pointer-events: none;
+  }
+  .busca::after {
+    content: ""; position: absolute; z-index: 1; left: 32px; top: calc(50% + 6px); width: 7px;
+    border-top: 2px solid #78918a; transform: rotate(45deg); pointer-events: none;
   }
   .busca input {
     width: 100%;
-    padding: 16px 20px;
-    font-size: 1.05rem;
-    border: 2px solid var(--verde);
-    border-radius: 999px;
+    min-height: 58px;
+    padding: 15px 18px 15px 46px;
+    font-size: .98rem;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
     background: var(--branco);
     color: var(--texto);
-    box-shadow: 0 4px 14px rgba(12, 174, 137, 0.25);
+    box-shadow: var(--sombra);
+    transition: border-color .18s ease, box-shadow .18s ease;
   }
-  #busca { min-height: 58px; }
-  #buscaModulo { max-width: 320px; justify-self: stretch; }
-  .busca input:focus { outline: 3px solid var(--verde-claro); outline-offset: 2px; }
-  main { max-width: 980px; margin: 0 auto; padding: 24px 20px 60px; }
-  #contagem { color: var(--verde-escuro); font-size: 0.95rem; margin-bottom: 16px; }
+  .busca input:focus { outline: none; border-color: var(--verde); box-shadow: 0 0 0 4px rgba(12,174,137,.13), var(--sombra); }
+  .busca input::placeholder { color: #899a95; }
+  main { max-width: 1160px; margin: 0 auto; padding: 28px 24px 64px; }
+  .resumo { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+  #contagem { color: var(--texto-suave); font-size: .92rem; margin: 0; }
+  .dica { color: var(--texto-suave); font-size: .82rem; }
 
   .grupo-modulo {
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
   .grupo-modulo h3 {
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     color: var(--verde-escuro);
-    font-size: 0.95rem;
+    font-size: .76rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: .1em;
+    display: flex; align-items: center; gap: 10px;
   }
+  .grupo-modulo h3::after { content: ""; height: 1px; background: var(--borda); flex: 1; }
 
   /* Cada parâmetro: nome à esquerda, descrição em bloco à direita */
   .param {
     display: grid;
-    grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
-    gap: 16px;
-    align-items: start;
-    margin-bottom: 12px;
+    grid-template-columns: minmax(220px, 270px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 14px;
   }
   .nome-col {
-    padding-top: 14px;
+    padding: 12px 4px;
   }
   .param h2 {
     margin: 0;
     font-size: 1.05rem;
     font-family: ui-monospace, Consolas, monospace;
-    color: var(--verde-escuro);
+    color: var(--texto);
     overflow-wrap: anywhere;
   }
   .modulo {
     margin-top: 4px;
     font-size: 0.75rem;
-    color: var(--verde-escuro);
-    opacity: 0.9;
+    color: var(--texto-suave);
+    opacity: 1;
   }
   .param .bloco {
-    background: var(--verde-claro);
-    border: 1px solid var(--verde);
-    border-left: 6px solid var(--verde);
-    border-radius: 8px;
-    padding: 12px 16px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-left: 4px solid var(--verde);
+    border-radius: 12px;
+    padding: 15px 18px 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
+    box-shadow: 0 3px 12px rgba(20,73,60,.035);
   }
   .param .texto {
     margin: 0;
@@ -109,7 +137,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
-    line-height: 1.5;
+    line-height: 1.65;
     max-height: 1.5em;
     transition: max-height 0.25s ease, -webkit-line-clamp 0.25s ease;
     flex: 1;
@@ -123,36 +151,46 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 88px;
-    height: 28px;
+    min-width: 88px;
+    height: 30px;
     margin-left: auto;
-    background: var(--verde);
-    border: none;
-    color: var(--branco);
+    background: var(--verde-claro);
+    border: 1px solid #c8e9df;
+    color: var(--verde-escuro);
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 600;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(12, 174, 137, 0.25);
+    box-shadow: none;
     padding: 0 10px;
     white-space: nowrap;
   }
   .param .toggle:hover {
-    filter: brightness(0.96);
+    background: #d8f1e9;
   }
-  mark { background: var(--verde); color: var(--branco); border-radius: 3px; padding: 0 3px; }
+  mark { background: #d5f3e9; color: #075943; border-radius: 3px; padding: 0 3px; }
   .vazio {
     text-align: center;
     padding: 40px 20px;
-    border: 2px dashed var(--verde);
-    border-radius: 8px;
+    border: 1px dashed #a8d7c9;
+    border-radius: 14px;
     color: var(--verde-escuro);
+    background: var(--branco);
+  }
+  @media (max-width: 700px) {
+    .filtros { grid-template-columns: 1fr; gap: 10px; margin-top: -34px; }
+    main { padding-top: 22px; }
+    .resumo { align-items: flex-start; flex-direction: column; gap: 4px; }
   }
   @media (max-width: 640px) {
-    .param { grid-template-columns: 1fr; gap: 6px; }
-    .param h2 { padding-top: 0; }
-    header h1 { font-size: 1.6rem; }
+    .topo { padding: 10px 18px; }
+    .topo img { height: 36px; }
+    header { padding: 38px 18px 54px; }
+    .filtros, main { padding-left: 16px; padding-right: 16px; }
+    .param { grid-template-columns: 1fr; gap: 2px; }
+    .nome-col { padding: 3px 2px 8px; }
+    .param .bloco { padding: 13px 15px 11px; }
   }
 </style>
 </head>
@@ -177,7 +215,10 @@
 </div>
 
 <main>
-  <div id="contagem" aria-live="polite"></div>
+  <div class="resumo">
+    <div id="contagem" aria-live="polite"></div>
+    <div class="dica">Os resultados são atualizados enquanto você digita</div>
+  </div>
   <div id="lista"></div>
 </main>
 
