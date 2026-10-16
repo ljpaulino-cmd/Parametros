@@ -23,7 +23,7 @@
     "nome": "IntegracaoContabilidade",
     "modulo": "Tesouraria",
     "descricao": "O parâmetro IntegracaoContabilidade define se a integração com a contabilidade estará habilitada no sistema, sendo que, quando configurado como 'N', a verificação da abertura do caixa em relação à situação dos meses contábeis é ignorada, permitindo a continuidade do processo sem essa validação; quando configurado como 'S' ou não estiver preenchido, a integração permanece ativa e são realizadas as verificações de conexão com o banco de dados contábil e da situação do mês de referência, identificando se ele já foi consistido ou exportado para o Tribunal."
-  }
+  },
 
     {
         "nome":  "BancoContabilidade",
