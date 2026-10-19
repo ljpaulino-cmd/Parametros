@@ -150,6 +150,6 @@
   {"nome":"DTEConsentimentoPrazosPessoaJuridica","modulo":"DTE","descricao":"Fornece os prazos de consentimento do DTE aplicáveis à pessoa jurídica. O portal consulta os valores para apresentar e validar o fluxo de adesão correspondente."},
   {"nome":"DTEInicioUso","modulo":"DTE","descricao":"Informa a data de início de uso do DTE considerada pelo portal ao determinar a disponibilidade e as permissões das funcionalidades de domicílio tributário eletrônico."},
   {"nome":"DTEUtiliza","modulo":"DTE","descricao":"Indica se o DTE está habilitado. O portal consulta essa configuração junto à data de início para determinar se deve disponibilizar as funcionalidades de domicílio tributário eletrônico."},
-  {"nome":"ITBIAlteraValorVenal","modulo":"ServicosWeb","descricao":"Define os contextos em que o valor venal pode ser alterado no ITBI pelo portal. A rotina de inclusão e edição consulta os valores configurados para habilitar ou restringir a edição conforme o tipo de imóvel e a operação."}
+  {"nome":"ITBIAlteraValorVenal","modulo":"ITBI","descricao":"Define os contextos em que o valor venal pode ser alterado no ITBI pelo portal. A rotina de inclusão e edição consulta os valores configurados para habilitar ou restringir a edição conforme o tipo de imóvel e a operação."}
 ]
 
