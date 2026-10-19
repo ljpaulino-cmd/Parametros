@@ -131,6 +131,6 @@
   {"nome":"PermiteValorEntradaPrevisao","modulo":"Atendimento","descricao":"Controla se o valor de entrada pode ser informado na previsão da negociação de débitos. O front-end carrega o parâmetro e usa o valor para habilitar ou condicionar essa funcionalidade na pesquisa de débitos."},
   {"nome":"PlanoPadrao","modulo":"Atendimento","descricao":"Identifica o plano de desconto padrão usado na pesquisa de débitos, na cobrança acumulada e em fluxos de parcelamento. Os serviços recuperam o identificador para carregar o plano e aplicá-lo como opção padrão; a pesquisa valida a existência do plano configurado."},
   {"nome":"PlanoPadraoParcelamentoWeb","modulo":"Atendimento","descricao":"Identifica o plano de desconto padrão para parcelamentos iniciados pela web. O serviço recupera o valor para fornecer a configuração usada pelo fluxo de parcelamento do portal."},
-  {"nome":"PlanoPadraoWeb","modulo":"Atendimento","descricao":"Identifica o plano de desconto padrão usado na pesquisa de débitos pela web. O serviço recupera o valor e o disponibiliza ao fluxo de pesquisa do portal."},
+  {"nome":"PlanoPadraoWeb","modulo":"Atendimento","descricao":"Identifica o plano de desconto padrão usado na pesquisa de débitos pela web. O serviço recupera o valor e o disponibiliza ao fluxo de pesquisa do portal."}
 ]
 
