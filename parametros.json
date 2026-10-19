@@ -1,29 +1,29 @@
 [
-  {
-    "nome": "BancoContabilidade",
-    "modulo": "Tesouraria",
-    "descricao": "O parâmetro BancoContabilidade, configurado como SMARAPD nos sistemas, define o banco de dados de contabilidade utilizado como referência para acesso às tabelas contábeis por meio de sinônimos, em conjunto com o parâmetro ServidorContabilidade, permitindo que as rotinas de crítica contábil e importação de referências acessem as tabelas necessárias conforme a configuração do servidor e do banco de dados."
-  },
-  {
-    "nome": "CodTributoCobrancaAcumulada",
-    "modulo": "Tesouraria",
-    "descricao": "O parâmetro CodTributoCobrancaAcumulada define o código do tributo utilizado no lançamento da cobrança acumulada, sendo recuperado das configurações do sistema e informado na geração da guia de arrecadação, vinculando a cobrança ao tributo correspondente e permitindo que o lançamento e a parcela sejam registrados com os valores e as informações pertinentes à cobrança."
-  },
-  {
-    "nome": "IdPadraoCalculoTaxasDiversas",
-    "modulo": "Tesouraria",
-    "descricao": "O parâmetro IdPadraoCalculoTaxasDiversas define o identificador do padrão de cálculo utilizado na geração de cobranças de taxas diversas, permitindo recuperar a condição de pagamento associada ao padrão configurado e vinculá-la à cobrança, garantindo que a geração das taxas siga as condições de pagamento estabelecidas no sistema."
-  },
-  {
-    "nome": "ServidorContabilidade",
-    "modulo": "Tesouraria",
-    "descricao": "O parâmetro ServidorContabilidade define o servidor SQL Server onde estão localizadas as informações do banco de dados de contabilidade, sendo utilizado em conjunto com o parâmetro BancoContabilidade para determinar a origem das tabelas contábeis acessadas pelas rotinas de crítica contábil e importação de referências, permitindo que os sinônimos apontem para o servidor e o banco de dados corretos, conforme a configuração do ambiente."
-  },
-  {
-    "nome": "IntegracaoContabilidade",
-    "modulo": "Tesouraria",
-    "descricao": "O parâmetro IntegracaoContabilidade define se a integração com a contabilidade estará habilitada no sistema, sendo que, quando configurado como 'N', a verificação da abertura do caixa em relação à situação dos meses contábeis é ignorada, permitindo a continuidade do processo sem essa validação; quando configurado como 'S' ou não estiver preenchido, a integração permanece ativa e são realizadas as verificações de conexão com o banco de dados contábil e da situação do mês de referência, identificando se ele já foi consistido ou exportado para o Tribunal."
-  },
+    {
+      "nome": "BancoContabilidade",
+      "modulo": "Tesouraria",
+      "descricao": "O parâmetro BancoContabilidade, configurado como SMARAPD nos sistemas, define o banco de dados de contabilidade utilizado como referência para acesso às tabelas contábeis por meio de sinônimos, em conjunto com o parâmetro ServidorContabilidade, permitindo que as rotinas de crítica contábil e importação de referências acessem as tabelas necessárias conforme a configuração do servidor e do banco de dados."
+    },
+    {
+      "nome": "CodTributoCobrancaAcumulada",
+      "modulo": "Tesouraria",
+      "descricao": "O parâmetro CodTributoCobrancaAcumulada define o código do tributo utilizado no lançamento da cobrança acumulada, sendo recuperado das configurações do sistema e informado na geração da guia de arrecadação, vinculando a cobrança ao tributo correspondente e permitindo que o lançamento e a parcela sejam registrados com os valores e as informações pertinentes à cobrança."
+    },
+    {
+      "nome": "IdPadraoCalculoTaxasDiversas",
+      "modulo": "Tesouraria",
+      "descricao": "O parâmetro IdPadraoCalculoTaxasDiversas define o identificador do padrão de cálculo utilizado na geração de cobranças de taxas diversas, permitindo recuperar a condição de pagamento associada ao padrão configurado e vinculá-la à cobrança, garantindo que a geração das taxas siga as condições de pagamento estabelecidas no sistema."
+    },
+    {
+      "nome": "ServidorContabilidade",
+      "modulo": "Tesouraria",
+      "descricao": "O parâmetro ServidorContabilidade define o servidor SQL Server onde estão localizadas as informações do banco de dados de contabilidade, sendo utilizado em conjunto com o parâmetro BancoContabilidade para determinar a origem das tabelas contábeis acessadas pelas rotinas de crítica contábil e importação de referências, permitindo que os sinônimos apontem para o servidor e o banco de dados corretos, conforme a configuração do ambiente."
+    },
+    {
+      "nome": "IntegracaoContabilidade",
+      "modulo": "Tesouraria",
+      "descricao": "O parâmetro IntegracaoContabilidade define se a integração com a contabilidade estará habilitada no sistema, sendo que, quando configurado como 'N', a verificação da abertura do caixa em relação à situação dos meses contábeis é ignorada, permitindo a continuidade do processo sem essa validação; quando configurado como 'S' ou não estiver preenchido, a integração permanece ativa e são realizadas as verificações de conexão com o banco de dados contábil e da situação do mês de referência, identificando se ele já foi consistido ou exportado para o Tribunal."
+    },
 
     {
         "nome":  "BancoContabilidade",
@@ -119,6 +119,103 @@
         "nome":  "SimplesRetornoCodBancoRetencaoOrgPub",
         "modulo":  "Tesouraria",
         "descricao":  "Código de banco específico para retenção de órgãos públicos no processamento FEBRABAN de retorno do Simples Nacional; quando não configurado, o processamento recorre ao código geral."
+    },
+     
+    {
+      "nome": "AtividadeComplementarNFE",
+      "modulo": "Mobiliario",
+      "descricao": "Identifica o tipo de atividade complementar usado nas consultas e no vínculo de atividades de prestação de serviços com CNAEs. O cadastro DECA e as consultas de atividade filtram os registros por esse tipo; na sugestão automática por CNAE, se não houver valor configurado, o serviço usa o tipo “Serviços116”."
+    },
+    {
+      "nome": "Atividades.TpAtividade",
+      "modulo": "Mobiliario",
+      "descricao": "Lista os tipos de atividade disponibilizados no cadastro de atividades; o front-end consulta os valores deste parâmetro para apresentar as opções de classificação ao usuário."
+    },
+    {
+      "nome": "CCMCriarInscricaoMunicipal",
+      "modulo": "Mobiliario",
+      "descricao": "Quando o valor é “S”, o serviço de cadastro do CCM gera a inscrição municipal a partir do próximo identificador da sequência InscrMunicipal/CCM/NextId. No fluxo de alteração, a inscrição existente é preservada; se esse parâmetro não estiver ativo, a rotina pode usar o identificador do CCM conforme utilizarCcmComoIncrMunicipal."
+    },
+    {
+      "nome": "CcmPublicidades.TpPainel",
+      "modulo": "Mobiliario",
+      "descricao": "Fornece as opções de tipo de painel usadas no cadastro de publicidade vinculado ao CCM."
+    },
+    {
+      "nome": "CCMSituacaoEncerramento",
+      "modulo": "Mobiliario",
+      "descricao": "Fornece os valores de situação de encerramento carregados pelo cadastro mobiliário para a seleção da situação aplicável ao encerrar um CCM."
+    },
+    {
+      "nome": "CNAEAtividadeAutomatico",
+      "modulo": "Mobiliario",
+      "descricao": "Controla a sincronização automática de atividades de prestação de serviços associadas aos CNAEs do CCM. Quando o valor é “S”, ao atualizar o vínculo de CNAE o serviço consulta as atividades relacionadas e encerra vínculos de atividade incompatíveis que estejam ativos."
+    },
+    {
+      "nome": "DECAAtualizarContribuintes",
+      "modulo": "Mobiliario",
+      "descricao": "Quando habilitado, após o processamento da solicitação DECA o serviço propaga para os cadastros de contribuintes os dados atualizados de sócios, solicitante e empresa informados na solicitação."
+    },
+    {
+      "nome": "DECACNAEAtividadeAutomatico",
+      "modulo": "Mobiliario",
+      "descricao": "Controla a sugestão automática de atividades a partir dos CNAEs informados em uma solicitação DECA. Quando o valor é “N”, a rotina não retorna sugestões; quando habilitada, consulta atividades associadas aos CNAEs e ao tipo definido por AtividadeComplementarNFE."
+    },
+    {
+      "nome": "DECASituacaoEncerramento",
+      "modulo": "Mobiliario",
+      "descricao": "Identifica a situação configurada para baixa/encerramento do cadastro mobiliário decorrente de uma solicitação DECA de encerramento. O serviço resolve o valor do parâmetro para a descrição da situação gravada no CCM e na solicitação."
+    },
+    {
+      "nome": "Licenciamento.CrachadeAmbulanteTributos",
+      "modulo": "Mobiliario",
+      "descricao": "Define os códigos de tributo aceitos na validação da licença/crachá de ambulante. O serviço usa essa lista para localizar os lançamentos do exercício e verificar a existência de débitos, a situação ativa do cadastro e a quitação ou regularização das parcelas."
+    },
+    {
+      "nome": "ManualExternoDeca",
+      "modulo": "Mobiliario",
+      "descricao": "Indica o manual externo associado à DECA. A rotina de obtenção do manual usa a sugestão configurada e retorna erro quando não há identificador de manual disponível."
+    },
+    {
+      "nome": "OcultarInfoSensiveisLGPDPortal",
+      "modulo": "Mobiliario",
+      "descricao": "Quando ativo, informa à consulta de dados da empresa do CCM que deve ocultar informações sensíveis apresentadas no portal, aplicando o controle de exposição associado à LGPD."
+    },
+    {
+      "nome": "TipoAtividadePublicidade",
+      "modulo": "Mobiliario",
+      "descricao": "Define os tipos de atividade que compõem a consulta de atividades de publicidade. A rotina filtra por esses valores e considera os valores de atividade do exercício mais recente disponível."
+    },
+    {
+      "nome": "TipodeAlvara",
+      "modulo": "Mobiliario",
+      "descricao": "Agrupa os tipos de alvará usados na parametrização de licenças. Na validação da consulta de crachá ambulante, o serviço também exige que exista um alvará do CCM e exercício informados cujo valor seja “CrachaAmbulante” e cujo parâmetro seja TipodeAlvara."
+    },
+    {
+      "nome": "TipoDeISSUtilizadoDECA",
+      "modulo": "Mobiliario",
+      "descricao": "Relaciona os códigos de regime de tributação informados na solicitação DECA às descrições apresentadas no retorno. Se não encontrar descrição configurada para o código, o serviço usa descrições de contingência para alguns regimes e sinaliza o regime como não definido para os demais."
+    },
+    {
+      "nome": "TipoDeSolicitacaoPermitido",
+      "modulo": "Mobiliario",
+      "descricao": "Controla quais tipos de solicitação DECA estão disponíveis para cadastro. A validação consulta os valores por tipo de solicitação e bloqueia o processamento quando encontra valor “S” para o tipo solicitado."
+    },
+    {
+      "nome": "TiposdeSolicitacaoPorTipoPessoa",
+      "modulo": "Mobiliario",
+      "descricao": "Controla se solicitações DECA podem ser feitas para pessoa física e pessoa jurídica. A validação do CPF/CNPJ consulta os valores PermiteSolicitacaoParaPF e PermiteSolicitacaoParaPJ e rejeita o tipo de pessoa quando a opção correspondente não está habilitada."
+    },
+    {
+      "nome": "utilizarCcmComoIncrMunicipal",
+      "modulo": "Mobiliario",
+      "descricao": "Quando ativo e CCMCriarInscricaoMunicipal não está ativo, define a inscrição municipal como o identificador do CCM durante a inclusão ou alteração do cadastro. O valor também é retornado ao formulário para apresentar a inscrição conforme essa regra."
+    },
+    {
+      "nome": "UtilizarVinculoCNAEAtividadenaSolicitacao",
+      "modulo": "Mobiliario",
+      "descricao": "Quando ativo, limita as atividades sugeridas na solicitação DECA às atividades associadas aos CNAEs informados. Na validação da solicitação, se houver CNAEs com atividades de serviço vinculadas, exige a inclusão de ao menos uma atividade de prestação de serviços."
     }
+
   
 ]
